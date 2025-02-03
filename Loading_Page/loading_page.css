@@ -1,0 +1,44 @@
+body{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.loading{
+    max-width: 50%;
+    line-height: 1.4;
+    font-size: 1.6rem;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.loading__author{
+    font-weight: bold;
+    font-weight: 0.9rem !important;
+    color: rgba(189,189,189 ,1);
+    margin: 0.6rem 0 0.2rem 0;
+    display: block;
+}
+
+@keyframes rotate{
+    to{transform:rotate(1turn)}}
+
+.loading__animation{
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+    border: solid 5px rgba(189,189,189 ,0.25);
+    border-top-color: orange;
+    border-right-color: orange;
+    border-radius: 50%;
+
+    animation-name: rotate;
+    animation-duration: 600ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    
+    animation: rotate 600ms linear infinite;
+}
+
