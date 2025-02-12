@@ -42,10 +42,21 @@
         </div>
         
         <script>
-
             const calculator = document.querySelector('.calculator')
             const keys = calculator.querySelector('.calculator__keys')
-        
+            
+            const updateClearButton = (forceAC = false) => {
+                    const clearButton = keys.querySelector('[data-action = "clear"], [data-action = "delete"]');
+                
+                if (display.textContent === '0' || forceAC ){
+                        clearButton.dataset.action = 'clear';
+                        clearButton.textContent = 'AC'
+                } else{
+                    clearButton.dataset.action = 'delete';
+                        clearButton.textContent = 'DEL'
+                }
+            }
+
             keys.addEventListener('click', e => {
                 if (e.target.matches('button')){
         
@@ -110,12 +121,14 @@
 
 
                     if (!action){
-                        if(displayedNum === '0' || previousKeyType === 'operator') {
+                        if(displayedNum === '0' || 
+                        previousKeyType === 'operator') {
                             display.textContent = keyContent
                         } else {
                             display.textContent = displayedNum + keyContent
                         }
                         calculator.dataset.previousKeyType = 'number';
+                        updateClearButton();
                     }
 
 
@@ -127,6 +140,7 @@
                         }
 
                         calculator.dataset.previousKeyType = 'decimal';
+                        updateClearButton();
                     }
 
 
@@ -135,6 +149,16 @@
                         calculator.dataset.previousKeyType = 'clear';
                         delete calculator.dataset.firstValue;
                         delete calculator.dataset.operator; 
+                        updateClearButton(true);
+                    }
+
+                    if (action === 'delete'){
+                        if (displayedNum.length > 1){
+                            display.textContent = displayedNum.slice(0, -1);
+                        } else {
+                            display.textContent = '0'
+                        }
+                        updateClearButton();
                     }
 
                     if (
@@ -171,9 +195,17 @@
                         const secondValue = displayedNum
 
                         if (firstValue){
+                            if (previousKeyType === 'calculate'){
+                                firstValue = displayedNum
+                                secondValue = calculator.dataset.modValue
+                            }
                             display.textContent = calculate(firstValue, operator, secondValue)
                         }
+
+                        calculator.dataset.modValue = secondValue
                         calculator.dataset.previousKeyType = 'calculate';
+                        
+                        updateClearButton(true);
                     }
 
                     Array.from(key.parentNode.children)
@@ -181,7 +213,9 @@
 
                     
                 }
-            })
+            });
+
+            updateClearButton();
 
         </script>
     
